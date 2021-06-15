@@ -1,7 +1,6 @@
-from app import app
 from flask_sqlalchemy import SQLAlchemy
 
-db = SQLAlchemy(app)
+db = SQLAlchemy()
 
 #----------------------------------------------------------------------------#
 # Models.
@@ -22,8 +21,7 @@ class Venue(db.Model):
     seeking_talent = db.Column(db.Boolean, default=False)
     seeking_description = db.Column(db.String(500))
     genres = db.Column(db.ARRAY(db.String),nullable=False)
-    show = db.relationship('Show', backref='venue', lazy=True)
-    # TODO: implement any missing fields, as a database migration using Flask-Migrate
+    show = db.relationship('Show', backref='venue', lazy="joined")
 
 class Artist(db.Model):
     __tablename__ = 'Artist'
@@ -39,10 +37,8 @@ class Artist(db.Model):
     seeking_venue = db.Column(db.Boolean, default=False)
     seeking_description = db.Column(db.String(500))
     genres = db.Column(db.ARRAY(db.String),nullable=False)
-    show = db.relationship('Show', backref='artist', lazy=True)
-    # TODO: implement any missing fields, as a database migration using Flask-Migrate
+    show = db.relationship('Show', backref='artist', lazy="joined")
 
-# TODO Implement Show and Artist models, and complete all model relationships and properties, as a database migration.
 class Show(db.Model):
     __tablename__ = 'Show'
 
