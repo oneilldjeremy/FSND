@@ -164,7 +164,10 @@ def create_app(test_config=None):
       previous_questions = body.get('previous_questions', None)
       quiz_category = body.get('quiz_category', None)
 
-      current_question = Question.query.filter(Question.category == quiz_category['id']).filter(Question.id.notin_(previous_questions)).order_by(func.random()).first()
+      if quiz_category['id'] == 0:
+        current_question = Question.query.filter(Question.id.notin_(previous_questions)).order_by(func.random()).first()
+      else:
+        current_question = Question.query.filter(Question.category == quiz_category['id']).filter(Question.id.notin_(previous_questions)).order_by(func.random()).first()
 
       if current_question:
         current_question = current_question.format()
